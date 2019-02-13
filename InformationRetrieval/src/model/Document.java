@@ -49,4 +49,7 @@ public class Document {
         this.content = content;
     }
     
+    public String[] getListofTerm(){
+        return null;
+    }
 }
