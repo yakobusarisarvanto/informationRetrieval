@@ -43,4 +43,7 @@ public class Posting {
     public void setTerm(String term) {
         this.term = term;
     }
+    public int compareTo(Posting posting){
+        return this.term.compareToIgnoreCase(posting.getTerm());
+    }
 }
