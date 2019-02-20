@@ -18,7 +18,7 @@ public class testDocument3 {
     public static void main(String[] args) {
 
         Document doc1 = new Document(1, "computer information retrieval");
-        Document doc2 = new Document(2, "computer organisation and architecture");
+        Document doc2 = new Document(2, "computer organization and architecture");
         ArrayList<Document> listOfDocument = new ArrayList<Document>();
         listOfDocument.add(doc1);
         listOfDocument.add(doc2);
