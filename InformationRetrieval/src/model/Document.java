@@ -10,14 +10,33 @@ package model;
  * @author admin
  */
 public class Document {
+
     private int id;
     private String content;
 
     public Document() {
     }
-    
+
+    public Document(String content) {
+        this.content = content;
+    }
+
     public Document(int id, String content) {
         this.id = id;
+        this.content = content;
+    }
+
+    /**
+     * @return the content
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * @param content the content to set
+     */
+    public void setContent(String content) {
         this.content = content;
     }
 
@@ -35,21 +54,9 @@ public class Document {
         this.id = id;
     }
 
-    /**
-     * @return the content
-     */
-    public String getContent() {
-        return content;
-    }
-
-    /**
-     * @param content the content to set
-     */
-    public void setContent(String content) {
-        this.content = content;
-    }
-    
-    public String[] getListofTerm(){
-        return content.split("[ .]");
+    public String[] getListofTerm() {
+        String value = this.getContent();
+        value = value.replaceAll("[.,?!]", "");
+        return value.split(" ");
     }
 }
