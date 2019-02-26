@@ -54,13 +54,19 @@ public class InvertedIndex {
 
     public ArrayList<Posting> search(String query) {
         //buat index/dictionary
-        makeDictionary();
+//        makeDictionary();
         String tempQuery[] = query.split(" ");
-        ArrayList<ArrayList<Posting>> tempPosting = new ArrayList<>();
+        ArrayList<Posting> result = new ArrayList<Posting>();
         for (int i = 0; i < tempQuery.length; i++) {
-            tempPosting.add(search(tempQuery[i]));
+            String string = tempQuery[i];
+            if (i == 0) {
+                result = searchOneWord(string);
+            } else {
+                ArrayList<Posting> result1 = searchOneWord(string);
+                result = intersection(result, result1);
+            }
         }
-        return intersection(tempPosting.get(0), tempPosting.get(1));
+        return result;
     }
 
     public ArrayList<Posting> intersection(ArrayList<Posting> p1,
@@ -75,7 +81,7 @@ public class InvertedIndex {
         // menyiapkan variable p1Index dan p2Index
         int p1Index = 0;
         int p2Index = 0;
-        
+
         // menyiapkan variable post1 dan post2 bertipe Posting 
         Posting post1 = p1.get(p1Index);
         Posting post2 = p2.get(p2Index);
@@ -89,7 +95,7 @@ public class InvertedIndex {
                     // p1Index dan p2Index bertambah 1
                     p1Index++;
                     p2Index++;
-                    
+
                     post1 = p1.get(p1Index);
                     post2 = p2.get(p2Index);
                 } catch (Exception ex) {
@@ -108,8 +114,7 @@ public class InvertedIndex {
                     break;
                 }
 
-            } 
-            else {
+            } else {
                 try {
                     // p2Index bertambah 1
                     p2Index++;
@@ -141,6 +146,7 @@ public class InvertedIndex {
     }
 
     public void makeDictionary() {
+        // cek deteksi term yang frekuensinya lebih dari 1 pada sebuah dokumen
         //buat posting list term terurut
         ArrayList<Posting> list = getSortedPostingList();
         //looping buat list of term (dictionary)
@@ -175,7 +181,7 @@ public class InvertedIndex {
             }
         }
     }
-    
+
     /**
      * @return the listOfDocument
      */
