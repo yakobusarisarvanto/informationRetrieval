@@ -32,14 +32,10 @@ public class testDocument7 {
         // panggil fungsi search
         index.makeDictionary();
         ArrayList<Posting> result = index.searchOneWord("computer");
-        // panggil fungsi search
-        ArrayList<Posting> result1 = index.searchOneWord("machine");
-        // pangging fungsi instersect
-        ArrayList<Posting> join = index.intersection(result1, result);
         // tampilkan isi document dan id-nya
-        for (int i = 0; i < join.size(); i++) {
-            System.out.println("id_doc = " + join.get(i).getDocument().getId());
-            System.out.println(join.get(i).getDocument().getContent());
+        for (int i = 0; i < result.size(); i++) {
+            System.out.println("id_doc = " +result.get(i).getDocument().getId());
+            System.out.println(result.get(i).getDocument().getContent());
         }
     }
 }

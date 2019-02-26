@@ -56,15 +56,72 @@ public class InvertedIndex {
         //buat index/dictionary
         makeDictionary();
         String tempQuery[] = query.split(" ");
+        ArrayList<ArrayList<Posting>> tempPosting = new ArrayList<>();
         for (int i = 0; i < tempQuery.length; i++) {
-            String string = tempQuery[i];
+            tempPosting.add(search(tempQuery[i]));
         }
-        return null;
+        return intersection(tempPosting.get(0), tempPosting.get(1));
     }
 
     public ArrayList<Posting> intersection(ArrayList<Posting> p1,
             ArrayList<Posting> p2) {
-        return null;
+        // mengecek p1 atau p2 sama dengan null?
+        if (p1 == null || p2 == null) {
+            // mengembalikan posting p1 atau p2
+            return new ArrayList<>();
+        }
+        // menyiapkan posting tempPosting
+        ArrayList<Posting> tempPostings = new ArrayList<>();
+        // menyiapkan variable p1Index dan p2Index
+        int p1Index = 0;
+        int p2Index = 0;
+        
+        // menyiapkan variable post1 dan post2 bertipe Posting 
+        Posting post1 = p1.get(p1Index);
+        Posting post2 = p2.get(p2Index);
+
+        while (true) {
+            // mengecek id document post1 = id document post2?
+            if (post1.getDocument().getId() == post2.getDocument().getId()) {
+                try {
+                    // menambahkan post1 ke tempPosting
+                    tempPostings.add(post1);
+                    // p1Index dan p2Index bertambah 1
+                    p1Index++;
+                    p2Index++;
+                    
+                    post1 = p1.get(p1Index);
+                    post2 = p2.get(p2Index);
+                } catch (Exception ex) {
+                    // menghentikan program
+                    break;
+                }
+
+            } // mengecek id document post1 < id document post2?
+            else if (post1.getDocument().getId() < post2.getDocument().getId()) {
+                try {
+                    // p1Index bertambah 1
+                    p1Index++;
+                    post1 = p1.get(p1Index);
+                } catch (Exception ex) {
+                    // menghentikan program
+                    break;
+                }
+
+            } 
+            else {
+                try {
+                    // p2Index bertambah 1
+                    p2Index++;
+                    post2 = p2.get(p2Index);
+                } catch (Exception ex) {
+                    // menghentikan program
+                    break;
+                }
+            }
+        }
+        // mengembalikan nilai tempPosting
+        return tempPostings;
     }
 
     public ArrayList<Posting> searchOneWord(String word) {
@@ -118,7 +175,7 @@ public class InvertedIndex {
             }
         }
     }
-
+    
     /**
      * @return the listOfDocument
      */
