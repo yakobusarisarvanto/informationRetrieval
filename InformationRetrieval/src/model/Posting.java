@@ -13,8 +13,8 @@ public class Posting implements Comparable<Posting> {
 
     private String term;
     private Document document;
-    private int numberOfTerm;
-    
+    private int numberOfTerm = 1;
+
     public Posting(Document document) {
         this.document = document;
     }
@@ -54,7 +54,7 @@ public class Posting implements Comparable<Posting> {
 
     @Override
     public int compareTo(Posting posting) {
-        return getTerm().compareToIgnoreCase(posting.getTerm());
+        return term.compareToIgnoreCase(posting.getTerm());
     }
 
     /**
