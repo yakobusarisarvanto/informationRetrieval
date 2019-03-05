@@ -15,7 +15,7 @@ import model.Term;
  *
  * @author admin
  */
-public class testIDF5 {
+public class testIDF6 {
 
     public static void main(String[] args) {
         // seting dokumen
@@ -36,7 +36,7 @@ public class testIDF5 {
         // tampilkan isi document dan id-nya
         for (int i = 0; i < result.size(); i++) {
             System.out.println("Term = " + result.get(i).getTerm()
-                    + ", numberOfDocument = " + result.get(i).getNumberOfDocument());
+                    + ",numberOfDocument = " + result.get(i).getNumberOfDocument());
             ArrayList<Posting> tempPosting = result.get(i).getPostingList();
             for (int j = 0; j < tempPosting.size(); j++) {
                 System.out.println("id_doc = " + tempPosting.get(j).getDocument().getId()
@@ -53,5 +53,12 @@ public class testIDF5 {
         String tempString1 = "silver";
         double result3 = index.getInverseDocumentFrequency(tempString1);
         System.out.println("IDF of " + tempString1 + " is " + result3);
+
+        // tf
+        // idf
+        String tempString2 = "silver";
+        int idDoc = 2;
+        int result4 = index.getTermFrequency(tempString2, idDoc);
+        System.out.println("TF of " + tempString2 + " in idDoc = " + idDoc + " is " + result4);
     }
 }

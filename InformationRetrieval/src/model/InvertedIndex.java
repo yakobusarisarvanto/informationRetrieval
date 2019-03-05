@@ -13,17 +13,17 @@ import java.util.Collections;
  * @author admin
  */
 public class InvertedIndex {
-
+    
     private ArrayList<Document> listOfDocument = new ArrayList<Document>();
     private ArrayList<Term> dictionary = new ArrayList<Term>();
-
+    
     public InvertedIndex() {
     }
-
+    
     public void addNewDocument(Document document) {
         getListOfDocument().add(document);
     }
-
+    
     public ArrayList<Posting> getUnsortedPostingList() {
         // cek untuk term yang muncul lebih dari 1 kali
         // siapkan posting List
@@ -43,7 +43,7 @@ public class InvertedIndex {
         }
         return list;
     }
-
+    
     public ArrayList<Posting> getUnsortedPostingListWithTermNumber() {
         // cek untuk term yang muncul lebih dari 1 kali
         // siapkan posting List
@@ -63,7 +63,7 @@ public class InvertedIndex {
         }
         return list;
     }
-
+    
     public ArrayList<Posting> getSortedPostingList() {
         // siapkan posting List
         ArrayList<Posting> list = new ArrayList<Posting>();
@@ -73,7 +73,7 @@ public class InvertedIndex {
         Collections.sort(list);
         return list;
     }
-
+    
     public ArrayList<Posting> getSortedPostingListWithTermNumber() {
         // siapkan posting List
         ArrayList<Posting> list = new ArrayList<Posting>();
@@ -119,14 +119,14 @@ public class InvertedIndex {
         if (p1 == null || p2 == null) {
             return new ArrayList<>();
         }
-
+        
         ArrayList<Posting> postings = new ArrayList<>();
         int p1Index = 0;
         int p2Index = 0;
-
+        
         Posting post1 = p1.get(p1Index);
         Posting post2 = p2.get(p2Index);
-
+        
         while (true) {
             if (post1.getDocument().getId() == post2.getDocument().getId()) {
                 try {
@@ -138,7 +138,7 @@ public class InvertedIndex {
                 } catch (Exception e) {
                     break;
                 }
-
+                
             } else if (post1.getDocument().getId() < post2.getDocument().getId()) {
                 try {
                     p1Index++;
@@ -146,7 +146,7 @@ public class InvertedIndex {
                 } catch (Exception e) {
                     break;
                 }
-
+                
             } else {
                 try {
                     p2Index++;
@@ -158,7 +158,7 @@ public class InvertedIndex {
         }
         return postings;
     }
-
+    
     public ArrayList<Posting> searchOneWord(String word) {
         Term tempTerm = new Term(word);
         if (getDictionary().isEmpty()) {
@@ -174,7 +174,7 @@ public class InvertedIndex {
             }
         }
     }
-
+    
     public void makeDictionary() {
         // cek deteksi ada term yang frekuensinya lebih dari 
         // 1 pada sebuah dokumen
@@ -214,11 +214,11 @@ public class InvertedIndex {
                 // urutkan term dictionary
                 Collections.sort(getDictionary());
             }
-
+            
         }
-
+        
     }
-
+    
     public void makeDictionaryWithTermNumber() {
         // cek deteksi ada term yang frekuensinya lebih dari 
         // 1 pada sebuah dokumen
@@ -258,9 +258,9 @@ public class InvertedIndex {
                 // urutkan term dictionary
                 Collections.sort(getDictionary());
             }
-
+            
         }
-
+        
     }
 
     /**
@@ -298,7 +298,19 @@ public class InvertedIndex {
      * @return
      */
     public int getDocumentFrequency(String term) {
-        return 0;
+        Term tempTerm = new Term(term);
+        //cek apakah Term ada di dictionary
+        int index = Collections.binarySearch(dictionary, tempTerm);
+        if (index > 0) {
+            //term ada
+            //ambil ArrayList<Posting> dari objek term
+            ArrayList<Posting> tempPosting = dictionary.get(index).getPostingList();
+            //return ukuran posting list
+            return tempPosting.size();
+        } else {
+            //term tidak ada
+            return -1;
+        }        
     }
 
     /**
@@ -308,6 +320,34 @@ public class InvertedIndex {
      * @return
      */
     public double getInverseDocumentFrequency(String term) {
-        return 0.0;
+        Term tempTerm = new Term(term);
+        //cek apakah Term ada di dictionary
+        int index = Collections.binarySearch(dictionary, tempTerm);
+        if (index > 0) {
+            //term ada
+            //jumlah total dokumen
+            int n = listOfDocument.size();
+            //jumlah dokumen dengan term i
+            int ni = getDocumentFrequency(term);
+            return Math.log10(n / ni);
+        } else {
+            //term tidak ada
+            //nilai IDf=0
+            return 0.0;
+        }
+    }
+
+    /**
+     * Fungsi untuk mencari term frequency
+     *
+     * @param term
+     * @param idDocument
+     * @return
+     */
+    public int getTermFrequency(String term, int idDocument) {
+        Document dok = new Document();
+        dok.setId(idDocument);
+
+        return 0;
     }
 }
