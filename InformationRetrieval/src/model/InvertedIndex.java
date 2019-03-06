@@ -360,4 +360,25 @@ public class InvertedIndex {
         }
         return 0;
     }
+
+    /**
+     * Fungsi untuk menghitung TF-IDF dari sebuah dokumen
+     *
+     * @param idDocument
+     */
+    public ArrayList<Posting> makeTFIDF(int idDocument) {
+        Document document = new Document();
+        document.setId(idDocument);
+        int pos = Collections.binarySearch(listOfDocument, document);
+        ArrayList<Posting> tempPosting = listOfDocument.get(pos).getListofPosting();
+        for (int i = 0; i < tempPosting.size(); i++) {
+            String tempString = tempPosting.get(i).getTerm();
+            int tf = tempPosting.get(i).getNumberOfTerm();
+            double idf = getInverseDocumentFrequency(tempString);
+            double weight = tf*idf;
+            tempPosting.get(i).setWeight(weight);
+        }
+        return tempPosting;
+    }
+    
 }

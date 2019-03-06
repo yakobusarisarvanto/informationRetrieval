@@ -75,4 +75,18 @@ public class Posting implements Comparable<Posting> {
     public void setNumberOfTerm(int numberOfTerm) {
         this.numberOfTerm = numberOfTerm;
     }
+
+    /**
+     * @return the weight
+     */
+    public double getWeight() {
+        return weight;
+    }
+
+    /**
+     * @param weight the weight to set
+     */
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 }
