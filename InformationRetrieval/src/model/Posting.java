@@ -16,6 +16,10 @@ public class Posting implements Comparable<Posting> {
     private int numberOfTerm = 1;
     private double weight = 0.0;
 
+    public Posting() {
+        
+    }
+
     public Posting(Document document) {
         this.document = document;
     }
