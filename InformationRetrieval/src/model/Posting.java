@@ -17,7 +17,7 @@ public class Posting implements Comparable<Posting> {
     private double weight = 0.0;
 
     public Posting() {
-        
+
     }
 
     public Posting(Document document) {
@@ -59,7 +59,19 @@ public class Posting implements Comparable<Posting> {
 
     @Override
     public int compareTo(Posting posting) {
-        return term.compareToIgnoreCase(posting.getTerm());
+        int result = 0;
+        result = term.compareToIgnoreCase(posting.getTerm());
+        if (result == 0) {
+            if (posting.getDocument() != null) {
+                result = getDocument().getId()
+                        - posting.getDocument().getId();
+                return result;
+            } else {
+                return result;
+            }
+        } else {
+            return result;
+        }
     }
 
     /**

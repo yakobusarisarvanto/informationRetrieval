@@ -258,7 +258,6 @@ public class InvertedIndex {
                 // urutkan term dictionary
                 Collections.sort(getDictionary());
             }
-
         }
 
     }
@@ -299,16 +298,17 @@ public class InvertedIndex {
      */
     public int getDocumentFrequency(String term) {
         Term tempTerm = new Term(term);
-        //cek apakah Term ada di dictionary
+        // cek apakah term ada di dictionary
         int index = Collections.binarySearch(dictionary, tempTerm);
         if (index > 0) {
-            //term ada
-            //ambil ArrayList<Posting> dari objek term
-            ArrayList<Posting> tempPosting = dictionary.get(index).getPostingList();
-            //return ukuran posting list
+            // term ada
+            // ambil ArrayList<Posting> dari object term
+            ArrayList<Posting> tempPosting = dictionary.get(index)
+                    .getPostingList();
+            // return ukuran posting list
             return tempPosting.size();
         } else {
-            //term tidak ada
+            // term tidak ada
             return -1;
         }
     }
@@ -321,18 +321,19 @@ public class InvertedIndex {
      */
     public double getInverseDocumentFrequency(String term) {
         Term tempTerm = new Term(term);
-        //cek apakah Term ada di dictionary
+        // cek apakah term ada di dictionary
         int index = Collections.binarySearch(dictionary, tempTerm);
         if (index > 0) {
-            //term ada
-            //jumlah total dokumen
-            int n = listOfDocument.size();
-            //jumlah dokumen dengan term i
-            int ni = getDocumentFrequency(term);
-            return Math.log10(n / ni);
+            // term ada
+            // jumlah total dokumen
+            double N = listOfDocument.size();          
+            // jumlah dokumen dengan term i
+            double ni = getDocumentFrequency(term);
+            // idf = log10(N/ni)
+            return Math.log10(N / ni);
         } else {
-            //term tidak ada
-            //nilai IDf=0
+            // term tidak ada
+            // nilai idf = 0
             return 0.0;
         }
     }
@@ -347,6 +348,7 @@ public class InvertedIndex {
     public int getTermFrequency(String term, int idDocument) {
         Document document = new Document();
         document.setId(idDocument);
+        //cek apakah dokumen ada
         int pos = Collections.binarySearch(listOfDocument, document);
         if (pos >= 0) {
             ArrayList<Posting> tempPosting = listOfDocument.get(pos).getListofPosting();
@@ -358,6 +360,7 @@ public class InvertedIndex {
             }
             return 0;
         }
+
         return 0;
     }
 
@@ -369,16 +372,29 @@ public class InvertedIndex {
     public ArrayList<Posting> makeTFIDF(int idDocument) {
         Document document = new Document();
         document.setId(idDocument);
-        int pos = Collections.binarySearch(listOfDocument, document);
-        ArrayList<Posting> tempPosting = listOfDocument.get(pos).getListofPosting();
-        for (int i = 0; i < tempPosting.size(); i++) {
-            String tempString = tempPosting.get(i).getTerm();
-            int tf = tempPosting.get(i).getNumberOfTerm();
-            double idf = getInverseDocumentFrequency(tempString);
-            double weight = tf*idf;
-            tempPosting.get(i).setWeight(weight);
+        //cek apakah dokumen ada
+        int cek = Collections.binarySearch(listOfDocument, document);
+        if (cek < 0) {
+            //dokumen tidak ada
+            return null;
+        }else{
+            //dokumen ada
+            document = listOfDocument.get(cek);
+            //buat posting list tanpa nilai TFIDF
+            ArrayList<Posting> result = document.getListofPosting();
+            //isi atribut weight dari masing" posting
+            for (int i = 0; i < result.size(); i++) {
+                //buat tempPosting
+                Posting tempPosting = result.get(i);
+                //panggil fungsi hitung idf
+                double idf = getInverseDocumentFrequency(tempPosting.getTerm());
+                //panggil fungsi hitung tf
+                int tf = tempPosting.getNumberOfTerm();
+                //hitung tfidf
+                double weight = tf*idf;
+                result.get(i).setWeight(weight);
+            }
+            return result;
         }
-        return tempPosting;
     }
-    
 }
