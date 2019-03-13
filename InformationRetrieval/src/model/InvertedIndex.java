@@ -371,6 +371,7 @@ public class InvertedIndex {
      * @param idDocument
      */
     public ArrayList<Posting> makeTFIDF(int idDocument) {
+        //buat dokumen temporary, sesuai parsing parameter
         Document document = new Document();
         document.setId(idDocument);
         //cek apakah dokumen ada
@@ -380,9 +381,12 @@ public class InvertedIndex {
             return null;
         } else {
             //dokumen ada
+            //baca dokumen sesuai indeks di list dokumen
             document = listOfDocument.get(cek);
             //buat posting list tanpa nilai TFIDF
             ArrayList<Posting> result = document.getListofPosting();
+            //urutkan Postinglist
+            Collections.sort(result);
             //isi atribut weight dari masing" posting
             for (int i = 0; i < result.size(); i++) {
                 //buat tempPosting
@@ -393,6 +397,7 @@ public class InvertedIndex {
                 int tf = tempPosting.getNumberOfTerm();
                 //hitung tfidf
                 double weight = tf * idf;
+                //set bobot pada Posting
                 result.get(i).setWeight(weight);
             }
             return result;
@@ -409,7 +414,28 @@ public class InvertedIndex {
      */
     public double getInnerProduct(ArrayList<Posting> p1,
             ArrayList<Posting> p2) {
-        return 0.0;
+        //urutkan posting list
+        Collections.sort(p2);
+        Collections.sort(p1);
+        // buat temp hasil
+        double result = 0.0;
+        //looping dari posting list p1
+        for (int i = 0; i < p1.size(); i++) {
+            //ambil temp
+            Posting temp = p1.get(i);
+            //cari posting di p2
+            boolean found = false;
+            for (int j = 0; j < p2.size() && found == false; j++) {
+                Posting temp1 = p2.get(j);
+                if (temp1.getTerm().equalsIgnoreCase(temp.getTerm())) {
+                    //term sama
+                    found = true;
+                    //kalikan bobot untuk term yang sama
+                    result = result + temp1.getWeight() * temp.getWeight();
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -419,6 +445,24 @@ public class InvertedIndex {
      * @return
      */
     public ArrayList<Posting> getQueryPosting(String query) {
-        return null;
+        //buat dokumen
+        Document temp = new Document(-1,query);
+        //buat posting list
+        ArrayList<Posting> result = temp.getListofPosting();
+        Collections.sort(result);
+            //isi atribut weight dari masing" posting
+            for (int i = 0; i < result.size(); i++) {
+                //buat tempPosting
+                Posting tempPosting = result.get(i);
+                //panggil fungsi hitung idf
+                double idf = getInverseDocumentFrequency(tempPosting.getTerm());
+                //panggil fungsi hitung tf
+                int tf = tempPosting.getNumberOfTerm();
+                //hitung tfidf
+                double weight = tf * idf;
+                //set bobot pada Posting
+                result.get(i).setWeight(weight);
+            }
+        return result;
     }
 }
