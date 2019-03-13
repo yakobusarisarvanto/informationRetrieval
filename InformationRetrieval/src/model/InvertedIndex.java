@@ -326,10 +326,10 @@ public class InvertedIndex {
         if (index > 0) {
             // term ada
             // jumlah total dokumen
-            int N = listOfDocument.size();          
+            int N = listOfDocument.size();
             // jumlah dokumen dengan term i
             int ni = getDocumentFrequency(term);
-            double nni = (double)N/ni;
+            double nni = (double) N / ni;
             // idf = log10(N/ni)
             return Math.log10(nni);
         } else {
@@ -378,7 +378,7 @@ public class InvertedIndex {
         if (cek < 0) {
             //dokumen tidak ada
             return null;
-        }else{
+        } else {
             //dokumen ada
             document = listOfDocument.get(cek);
             //buat posting list tanpa nilai TFIDF
@@ -392,10 +392,33 @@ public class InvertedIndex {
                 //panggil fungsi hitung tf
                 int tf = tempPosting.getNumberOfTerm();
                 //hitung tfidf
-                double weight = tf*idf;
+                double weight = tf * idf;
                 result.get(i).setWeight(weight);
             }
             return result;
         }
+    }
+
+    /**
+     * Fungsi perkalian inner product dari PostingList Atribut yang dikalikan
+     * adalah atribut weight TFIDF dari posting
+     *
+     * @param p1
+     * @param p2
+     * @return
+     */
+    public double getInnerProduct(ArrayList<Posting> p1,
+            ArrayList<Posting> p2) {
+        return 0.0;
+    }
+
+    /**
+     * Fungsi untuk membentuk posting list dari sebuah query
+     *
+     * @param query
+     * @return
+     */
+    public ArrayList<Posting> getQueryPosting(String query) {
+        return null;
     }
 }
