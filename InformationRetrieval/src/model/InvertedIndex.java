@@ -406,7 +406,8 @@ public class InvertedIndex {
 
     /**
      * Fungsi perkalian inner product dari PostingList Atribut yang dikalikan
-     * adalah atribut weight TFIDF dari posting
+     * adalah atribut weight TFIDF dari posting ini dikenal dengna istilah
+     * perhitungan jarak eucledien
      *
      * @param p1
      * @param p2
@@ -473,7 +474,14 @@ public class InvertedIndex {
      * @return
      */
     public double getLengthOfPosting(ArrayList<Posting> posting) {
-        return 0;
+        //buat temp hasil
+        double result = 0;
+        for (int i = 0; i < posting.size(); i++) {
+            //jumlahkan masing-masing kuadrat bobot
+            result = result + Math.pow(posting.get(i).getWeight(), 2);
+        }
+        //kembalikan nilai akar dari jumlah kuadrat bobot
+        return Math.sqrt(result);
     }
 
     /**
@@ -485,7 +493,15 @@ public class InvertedIndex {
      */
     public double getCosineSimilarity(ArrayList<Posting> posting,
             ArrayList<Posting> posting1) {
-        return 0;
+        // cari jarak antar posting antara posting dan posting1
+        double jarak = getInnerProduct(posting, posting1);
+        // cari panjang posting 
+        double panjang_posting = getLengthOfPosting(posting);
+        // cari panjang posting1
+        double panjang_posting1 = getLengthOfPosting(posting1);
+        //hitung cosine similarity
+        double result = jarak / Math.sqrt(Math.pow(panjang_posting, 2) * Math.pow(panjang_posting1, 2));
+        return result;
     }
 
     /**
@@ -495,7 +511,29 @@ public class InvertedIndex {
      * @return
      */
     public ArrayList<SearchingResult> searchTFIDF(String query) {
-        return null;
+        // buat list search dokumen
+        ArrayList<SearchingResult> result = new ArrayList<SearchingResult>();
+        // ubah query menjadi array list posting
+        ArrayList<Posting> queryPostingList = getQueryPosting(query);
+        // buat posting list untuk seluruh dokumen
+        for (int i = 0; i < listOfDocument.size(); i++) {
+            // ambil obyek dokumen
+            Document doc = listOfDocument.get(i);
+            int idDoc = doc.getId();
+            //buat psoting list untuk dokumen
+            ArrayList<Posting> tempDocWeight = makeTFIDF(idDoc);
+            // hitung jarak antar posting list dokumen dengan psoting list query
+            double hasilDotProduct = getInnerProduct(tempDocWeight, queryPostingList);
+            if (hasilDotProduct > 0) {
+                SearchingResult resultDoc = new SearchingResult(hasilDotProduct, doc);
+                result.add(resultDoc);
+            }
+        }
+        // urutkan hasil cari dr kecil ke besar
+        Collections.sort(result);
+        // urutkan dr besar ke kecil
+        Collections.reverse(result);
+        return result;
     }
 
     /**
@@ -505,6 +543,28 @@ public class InvertedIndex {
      * @return
      */
     public ArrayList<SearchingResult> searchCosineSimilarity(String query) {
-        return null;
+        // buat list search dokumen
+        ArrayList<SearchingResult> result = new ArrayList<SearchingResult>();
+        // ubah query menjadi array list posting
+        ArrayList<Posting> queryPostingList = getQueryPosting(query);
+        // buat posting list untuk seluruh dokumen
+        for (int i = 0; i < listOfDocument.size(); i++) {
+            // ambil obyek dokumen
+            Document doc = listOfDocument.get(i);
+            int idDoc = doc.getId();
+            //buat psoting list untuk dokumen
+            ArrayList<Posting> tempDocWeight = makeTFIDF(idDoc);
+            // hitung cosin similarity antar posting list dokumen dengan psoting list query
+            double cosinSimilarity = getCosineSimilarity(tempDocWeight, queryPostingList);
+            if (cosinSimilarity > 0) {
+                SearchingResult resultDoc = new SearchingResult(cosinSimilarity, doc);
+                result.add(resultDoc);
+            }
+        }
+        // urutkan hasil cari dr kecil ke besar
+        Collections.sort(result);
+        // urutkan dr besar ke kecil
+        Collections.reverse(result);
+        return result;
     }
 }
