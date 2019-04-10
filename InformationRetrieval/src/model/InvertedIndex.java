@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -566,5 +567,13 @@ public class InvertedIndex {
         // urutkan dr besar ke kecil
         Collections.reverse(result);
         return result;
+    }
+    /**
+     * fungsi untuk membuat list dokumen dari sebuah directory
+     * asumsikan isi file cukup disimpan dalam sebuah obyek String
+     * @param dorectory 
+     */
+    public void readDirectory(File dorectory){
+        
     }
 }

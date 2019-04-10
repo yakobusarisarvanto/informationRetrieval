@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -110,5 +111,12 @@ public class Document implements Comparable<Document>{
     @Override
     public int compareTo(Document doc) {
         return id-doc.getId();
+    }
+    /**
+     * fungsi untuk membaca sebuah file *.txt dan
+     * hasil baca dimasukkan ke atribut content
+     */
+    public void readFile(int idDoc, File file){
+         
     }
 }
