@@ -28,7 +28,7 @@ public class testFileDocumen2 {
         }
 
         ArrayList<Document> listDoc = index.getListOfDocument();
-        for (int i = 0; i < args.length; i++) {
+        for (int i = 0; i < listDoc.size(); i++) {
             Document doc = listDoc.get(i);
             System.out.println("Content : " + doc.getId());
             System.out.println(doc.getContent());

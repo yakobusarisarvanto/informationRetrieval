@@ -5,15 +5,17 @@
  */
 package model;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author admin
  */
-public class Document implements Comparable<Document>{
+public class Document implements Comparable<Document> {
 
     private int id;
     private String content;
@@ -110,13 +112,29 @@ public class Document implements Comparable<Document>{
 
     @Override
     public int compareTo(Document doc) {
-        return id-doc.getId();
+        return id - doc.getId();
     }
+
     /**
-     * fungsi untuk membaca sebuah file *.txt dan
-     * hasil baca dimasukkan ke atribut content
+     * fungsi untuk membaca sebuah file *.txt dan hasil baca dimasukkan ke
+     * atribut content
      */
-    public void readFile(int idDoc, File file){
-         
+    public void readFile(int idDoc, File file) {
+
+        this.id = idDoc;
+        String strLine = null;
+        try {
+            FileReader inputDokumen = new FileReader(file);//membaca inputan sebuah dokumen
+            BufferedReader br = new BufferedReader(inputDokumen);
+
+            while ((strLine = br.readLine()) != null) {
+                this.setContent(strLine);
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File Not Found");
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
     }
 }
