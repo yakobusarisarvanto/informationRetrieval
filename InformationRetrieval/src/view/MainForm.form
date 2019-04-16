@@ -17,15 +17,21 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addDokumenMouseClicked"/>
               </Events>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="jMenu3">
+            <Menu class="javax.swing.JMenu" name="addDir">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jMenu3"/>
+                <Property name="text" type="java.lang.String" value="Add Directory"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addDirMouseClicked"/>
+              </Events>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="jMenu5">
+            <Menu class="javax.swing.JMenu" name="search">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jMenu5"/>
+                <Property name="text" type="java.lang.String" value="Search"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="searchMouseClicked"/>
+              </Events>
             </Menu>
             <Menu class="javax.swing.JMenu" name="exit">
               <Properties>

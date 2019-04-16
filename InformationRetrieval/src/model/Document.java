@@ -120,7 +120,6 @@ public class Document implements Comparable<Document> {
      * atribut content
      */
     public void readFile(int idDoc, File file) {
-
         this.id = idDoc;
         String strLine = null;
         try {

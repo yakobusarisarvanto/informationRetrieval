@@ -5,7 +5,9 @@
  */
 package view;
 
-import model.InvertedIndex;
+import java.io.*;
+import javax.swing.*;
+import model.*;
 
 /**
  *
@@ -36,8 +38,8 @@ public class MainForm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addDokumen = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
+        addDir = new javax.swing.JMenu();
+        search = new javax.swing.JMenu();
         exit = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
@@ -64,11 +66,21 @@ public class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(addDokumen);
 
-        jMenu3.setText("jMenu3");
-        jMenu1.add(jMenu3);
+        addDir.setText("Add Directory");
+        addDir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addDirMouseClicked(evt);
+            }
+        });
+        jMenu1.add(addDir);
 
-        jMenu5.setText("jMenu5");
-        jMenu1.add(jMenu5);
+        search.setText("Search");
+        search.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchMouseClicked(evt);
+            }
+        });
+        jMenu1.add(search);
 
         exit.setText("Exit");
         exit.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -108,6 +120,36 @@ public class MainForm extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMouseClicked
 
+    private void addDirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addDirMouseClicked
+        JFileChooser fileChooser = new JFileChooser();
+        // set fileCjooser hanya directory
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fileChooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            // baca directory
+            File dir = fileChooser.getSelectedFile();
+            // baca isi directory
+            File files[] = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                // buat document baru
+                Document doc = new Document();
+                doc.setId(i + 1); // set idDoc sama dengan i
+                // baca isi file
+                // Isi file disimpan di atribut content dari objeck document
+                // variabel i merupakan idDocument;
+                File file = files[i];
+                doc.readFile(i + 1, file);
+                // masukkan file isi directory ke list of document pada obye index
+                getIndex().addNewDocument(doc);
+            }
+        }
+    }//GEN-LAST:event_addDirMouseClicked
+
+    private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
+        Searching cari = new Searching();
+        cari.setVisible(true);
+    }//GEN-LAST:event_searchMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -144,14 +186,14 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu addDir;
     private javax.swing.JMenu addDokumen;
     private javax.swing.JMenu exit;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenu search;
     // End of variables declaration//GEN-END:variables
 public InvertedIndex getIndex() {
         return index;
