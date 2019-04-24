@@ -25,18 +25,21 @@ import org.apache.lucene.util.Version;
 public class Document implements Comparable<Document> {
 
     private int id;
-    private String content;
+    private String content;//atribut content yg dianalisis
+    private String realContent;//atribut content asli
 
     public Document() {
     }
 
     public Document(String content) {
         this.content = content;
+        this.realContent = content;
     }
 
     public Document(int id, String content) {
         this.id = id;
         this.content = content;
+        this.realContent = content;
     }
 
     /**
@@ -143,10 +146,10 @@ public class Document implements Comparable<Document> {
             System.err.println("Error: " + e.getMessage());
         }
     }
-    
+
     @Override
     public String toString() {
-        return "Document{" + "id = " + id + ", content = " + content + '}';
+        return "Document{" + "id = " + id + ", content = " + content + ", realContent = " + realContent + '}';
     }
     
     /**
