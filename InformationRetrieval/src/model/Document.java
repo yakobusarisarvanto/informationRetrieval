@@ -213,4 +213,11 @@ public class Document implements Comparable<Document> {
         }
         content = sb.toString();
     }
+    
+    /**
+     * fungsi untuk menstemming content dalam bahasa indonesia
+     */
+    public void IndonesiaStemming(){
+        
+    }
 }
